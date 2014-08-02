@@ -30,7 +30,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: "/app",
       abstract: true,
       templateUrl: "templates/side-menu.html",
-      controller: 'AppCtrl'
     })
 
     .state('app.main', {
@@ -38,7 +37,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       views: {
         'menuContent' :{
           templateUrl: "templates/main.html",
-          controller: 'AppCtrl'
         }
       }
     })
@@ -48,7 +46,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       views: {
         'menuContent' :{
           templateUrl: "templates/play.html",
-          controller: 'AppCtrl'
         }
       }
     })
@@ -58,7 +55,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       views: {
         'menuContent' :{
           templateUrl: "templates/single.html",
-          controller: 'AppCtrl'
         }
       }
     })
@@ -68,7 +64,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       views: {
         'menuContent' :{
           templateUrl: "templates/multi.html",
-          controller: 'AppCtrl'
         }
       }
     })
