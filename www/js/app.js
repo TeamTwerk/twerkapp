@@ -7,7 +7,7 @@
 
 var socket = io.connect("172.18.1.251:3000");
 
-angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.socket-io'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -79,4 +79,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
     })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/main');
+})
+.factory('mySocket', function (socketFactory) {
+    var myIoSocket = io.connect('http://172.18.1.251:3000');
+
+    var mySocket = socketFactory({
+      ioSocket: myIoSocket
+    });
+
+    return mySocket;
 });

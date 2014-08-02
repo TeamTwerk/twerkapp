@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, mySocket) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -35,6 +35,15 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.changeState = function(state) {
     $state.go(state);
   };
+
+  $scope.emitData = function() {
+    mySocket.emit('data', {meow: 'hi'});
+  };
+
+  mySocket.on('data', function(data) {
+    console.log(data);
+  });
+
 })
 
 .controller('GeoCtrl', function ($scope, $ionicLoading, $compile, $cordovaGeolocation) {
