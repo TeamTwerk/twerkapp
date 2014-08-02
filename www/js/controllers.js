@@ -48,7 +48,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('MultiCtrl', function($scope, $state, mySocket) {
   $scope.joinMultiplayer = function() {
-    $state.go('app.multi');
     $scope.emitMultiData('join');
   };
 
