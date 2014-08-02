@@ -63,7 +63,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       url: "/single",
       views: {
         'menuContent' :{
-          templateUrl: "templates/single.html"
+          templateUrl: "templates/single.html",
+          controller: "SinglePlayerCtrl"
         }
       }
     })
@@ -98,4 +99,172 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
     });
 
     return mySocket;
+}).factory('twerkometer', function twerkometer($cordovaDeviceMotion) {
+
+  function Vector(x, y, z) {
+
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+    this.magnitude = function() {
+      return Math.sqrt(x*x + y*y + z*z);
+    }
+
+    this.multiply = function(factor) {
+      return new Vector(x * factor, y * factor, z * factor);
+    }
+
+    this.add = function(vector) {
+      return new Vector(x + vector.x, y + vector.y, z + vector.z);
+    }
+
+    this.subtract = function(vector) {
+      return new Vector(x - vector.x, y - vector.y, z - vector.z);
+    }
+
+    this.dot = function(vector) {
+      return x * vector.x + y * vector.y + z * vector.z;
+    }
+
+    this.normalise = function() {
+      var n = 1/this.magnitude();
+      return new Vector(x*n, y*n, z*n);
+    }
+
+    this.jiggle = function(amount) {
+      function j(num, amount) { return num + (Math.random() - 0.5) * amount; }
+      return new Vector(j(x, amount), j(y, amount), j(z, amount));
+    }
+
+  }
+
+  function DataPoint(time, vector) {
+    this.time = time;
+    this.vector = vector;
+  }
+
+  function TwerkDetector(threshold, frames, iterations, jiggle) {
+
+    var dataPoints = [];
+    var filteredPoints = [];
+    var twerkLine = new Vector(1, 0, 0);
+
+    this.add = function(dataPoint) {
+      twerkDetected = false;
+      dataPoints.push(dataPoint);
+      while(dataPoints.length > frames) {
+        dataPoints.shift();
+      }
+      this.process();
+    }
+
+    this.process = function() {
+      solveTwerkLine();
+      filterPoints();
+    }
+
+    this.getRawPoints = function() {
+      return dataPoints;
+    }
+
+    this.getFilteredPoints = function() {
+      return filteredPoints;
+    }
+
+    this.twerkDetected = function() {
+      if(filteredPoints.length < 2) {
+        return false;
+      }
+      var len = filteredPoints.length;
+      //console.log(filteredPoints[len - 1].vector.x);
+      return filteredPoints[len - 1].vector.x != filteredPoints[len - 2].vector.x;
+    }
+
+    var solveTwerkLine = function() {
+      for(var i = 0; i < iterations; i++) {
+        stepTwerkLine();
+      }
+    }
+
+    var stepTwerkLine = function() {
+      var alteredTwerkLine = twerkLine.jiggle(jiggle).normalise();
+      var error = twerkLineError(twerkLine);
+      var alteredError = twerkLineError(alteredTwerkLine);
+      if(alteredError < error) {
+        twerkLine = alteredTwerkLine;
+      }
+    }
+
+    var filterPoints = function() {
+      filteredPoints = dataPoints.map(function(dataPoint) {
+        var x = twerkLine.dot(dataPoint.vector);
+        return new DataPoint(dataPoint.time, new Vector(x, 0, 0));
+      });
+      var total = 0;
+      for(var i = 0; i < filteredPoints.length; i++) {
+        total += filteredPoints[i].vector.x;
+      }
+      var average = total / filteredPoints.length;
+      for(var i = 0; i < filteredPoints.length; i++) {
+        filteredPoints[i].vector.x -= average;
+      }
+      var clampedValue = -1;
+      for(var i = 0; i < filteredPoints.length; i++) {
+        x = filteredPoints[i].vector.x;
+        if(x > threshold && clampedValue < 0) {
+          filteredPoints[i].vector.x = 1;
+          clampedValue = 1;
+        } else if(x < -threshold && clampedValue > 0) {
+          filteredPoints[i].vector.x = -1;
+          clampedValue = -1;
+        } else {
+          filteredPoints[i].vector.x = clampedValue;
+        }
+      }
+    }
+
+    var twerkLineError = function (line) {
+      var error = 0;
+      dataPoints.forEach(function(dataPoint) {
+        error += linePointDistance(line, dataPoint.vector);
+      });
+      return error
+    }
+
+    var linePointDistance = function(line, point) {
+      return line.multiply(point.dot(line)).subtract(point).magnitude();
+    }
+
+  }
+
+  var twerkDetector = new TwerkDetector(0.01, 50, 20, 0.3);
+  
+  var resultObject = {
+    callback: function() {}
+  };
+
+  // setInterval(function() {
+  //   var time = Date.now()/1000;
+  //   var dataPoint = new DataPoint(time, new Vector(100 * Math.random(), Math.random(), Math.random()));
+  //   twerkDetector.add(dataPoint);
+  //   if(twerkDetector.twerkDetected()) {
+  //     resultObject.callback();
+  //   }
+  // }, 100);
+
+  var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
+  watch.promise.then(
+    function() {/* unused */},  
+    function(err) {},
+    function(acc) {
+      resultObject.callback('calling!');
+      var time = Date.now()/1000;
+      var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
+      twerkDetector.add(dataPoint);
+      if(twerkDetector.twerkDetected()) {
+      }
+  });
+
+  return resultObject;
 });
