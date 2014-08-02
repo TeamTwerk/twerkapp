@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -47,7 +47,8 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('GeoCtrl', function ($scope, $ionicLoading, $compile) {
+.controller('GeoCtrl', function ($scope, $ionicLoading, $compile, $cordovaGeolocation) {
+  $scope.info = "balasasd";
    function initialize() {
         var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
 
@@ -79,7 +80,8 @@ angular.module('starter.controllers', [])
 
         $scope.map = map;
       }
-      google.maps.event.addDomListener(window, 'load', initialize);
+      //google.maps.event.addDomListener(window, 'load', initialize);
+      initialize();
 
       $scope.centerOnMe = function() {
         if(!$scope.map) {
@@ -93,7 +95,7 @@ angular.module('starter.controllers', [])
 
         navigator.geolocation.getCurrentPosition(function(pos) {
           $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-          $scope.loading.hide();
+          $ionicLoading.hide();
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
@@ -102,5 +104,4 @@ angular.module('starter.controllers', [])
       $scope.clickTest = function() {
         alert('Example of infowindow with ng-click')
       };
-
 });
