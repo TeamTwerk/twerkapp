@@ -187,12 +187,11 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, twerkometer) {
   
-  $scope.twerks = 'No message';
+  $scope.twerks = 0;
 
   twerkometer.callback = function(message) {
-    $scope.$apply(function() {
-      $scope.twerks = message;
-    });
+    $scope.twerks++;
+    $scope.apply();
   }
 
 });

@@ -99,7 +99,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
     });
 
     return mySocket;
-}).factory('twerkometer', function twerkometer($cordovaDeviceMotion) {
+}).factory('twerkometer', ['$cordovaDeviceMotion', function twerkometer($cordovaDeviceMotion) {
 
   function Vector(x, y, z) {
 
@@ -238,33 +238,38 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
   }
 
-  var twerkDetector = new TwerkDetector(0.01, 50, 20, 0.3);
+  var twerkDetector = new TwerkDetector(1.5, 50, 50, 0.3);
   
   var resultObject = {
     callback: function() {}
   };
 
-  // setInterval(function() {
-  //   var time = Date.now()/1000;
-  //   var dataPoint = new DataPoint(time, new Vector(100 * Math.random(), Math.random(), Math.random()));
-  //   twerkDetector.add(dataPoint);
-  //   if(twerkDetector.twerkDetected()) {
-  //     resultObject.callback();
-  //   }
-  // }, 100);
-
-  var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
-  watch.promise.then(
-    function() {/* unused */},  
-    function(err) {},
-    function(acc) {
-      resultObject.callback('calling!');
+  setInterval(function() {
+    $cordovaDeviceMotion.getCurrentAcceleration().then(function(acc) {
       var time = Date.now()/1000;
       var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
+      //resultObject.callback([acc.x, acc.y, acc.z].join(' '));
       twerkDetector.add(dataPoint);
       if(twerkDetector.twerkDetected()) {
-      }
-  });
+        resultObject.callback();
+      } 
+    }, function(err) {
+      // An error occured. Show a message to the user
+    });
+  }, 100);
+
+  // setInterval(function() {resultObject.callback('calling!'); var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
+  // watch.promise.then(
+  //   function() {/* unused */},  
+  //   function(err) {},
+  //   function(acc) {
+  //     resultObject.callback('calling!');
+  //     var time = Date.now()/1000;
+  //     var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
+  //     twerkDetector.add(dataPoint);
+  //     if(twerkDetector.twerkDetected()) {
+  //     }
+  // }) }, 2000);
 
   return resultObject;
-});
+}]);
