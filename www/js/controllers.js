@@ -94,7 +94,7 @@ angular.module('starter.controllers', ['ngCordova'])
         debugTwerkInterval = setInterval(function() {
           $scope.duration--;
           $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
-          if(duration == 0) {
+          if($scope.duration == 0) {
             mySocket.emit('leave', {c: $scope.currentRoomID});
             $state.go('app.play');
           }
