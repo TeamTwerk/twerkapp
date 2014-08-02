@@ -68,6 +68,8 @@ angular.module('starter.controllers', ['ngCordova'])
   var myUUDI = 1234;
   var playerReady = false;
   var currentRoomID;
+  var countdownTimer;
+  var debugTwerkInterval;
 
   $scope.leaveMultiplayer = function() {
     mySocket.emit('matchmaking', {m: 'leave'});
@@ -84,8 +86,26 @@ angular.module('starter.controllers', ['ngCordova'])
     }
   };
 
+  $scope.startCountdown = function() {
+    countdownTimer = setInterval(function() {
+      $scope.countdown--;
+      if($scope.countdown == 0) {
+        clearInterval(countdownTimer);
+
+        debugTwerkInterval = setInterval(function() {
+          $scope.duration--;
+          $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
+          if(duration == 0) {
+            mySocket.emit('leave', {c: $scope.roomID});
+            $state.go('app.play');
+          }
+        }, 1000);
+      }
+    }, 1000);
+  };
+
   $scope.emitTwerkData = function(t, tpm) {
-    mySocket.emit('data', {c: {roomId: $scope.roomID, twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
+    mySocket.emit('data', {c: {roomId: $scope.roomID}, m:{twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
   };
 
   $scope.emitMessageData = function(data) {
@@ -98,6 +118,9 @@ angular.module('starter.controllers', ['ngCordova'])
     switch(data.m) {
       case "startMatch":
         console.log("START MATCH");
+        $scope.countdown = data.c.countdown;
+        $scope.duration = data.c.duration;
+        startCountdown();
         break;
     }
   });
