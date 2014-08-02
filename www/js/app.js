@@ -238,38 +238,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
   }
 
-  var twerkDetector = new TwerkDetector(1.5, 50, 50, 0.3);
+  var twerkDetector = new TwerkDetector(3, 20, 30, 0.3);
   
-  var resultObject = {
+  var resultProxy = {
     callback: function() {}
   };
 
   setInterval(function() {
-    $cordovaDeviceMotion.getCurrentAcceleration().then(function(acc) {
-      var time = Date.now()/1000;
-      var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
-      //resultObject.callback([acc.x, acc.y, acc.z].join(' '));
-      twerkDetector.add(dataPoint);
-      if(twerkDetector.twerkDetected()) {
-        resultObject.callback();
-      } 
-    }, function(err) {
-      // An error occured. Show a message to the user
-    });
+    if(navigator.accelerometer) {
+      $cordovaDeviceMotion.getCurrentAcceleration().then(function(acc) {
+        var time = Date.now()/1000;
+        var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
+        twerkDetector.add(dataPoint);
+        if(twerkDetector.twerkDetected()) {
+          resultProxy.callback();
+        } 
+      }, function(err) {
+        // An error occured. Show a message to the user
+      });
+    } else {
+      if(Math.random() < 0.1) {
+        resultProxy.callback();
+      }
+    }
   }, 100);
-
-  // setInterval(function() {resultObject.callback('calling!'); var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
-  // watch.promise.then(
-  //   function() {/* unused */},  
-  //   function(err) {},
-  //   function(acc) {
-  //     resultObject.callback('calling!');
-  //     var time = Date.now()/1000;
-  //     var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
-  //     twerkDetector.add(dataPoint);
-  //     if(twerkDetector.twerkDetected()) {
-  //     }
-  // }) }, 2000);
-
-  return resultObject;
+     
+  return resultProxy;
 }]);
