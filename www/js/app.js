@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-var socket = io.connect("http://127.0.0.1:3000");
+var socket = io.connect("172.18.1.251:3000");
 
 angular.module('starter', ['ionic', 'starter.controllers'])
 
@@ -29,46 +29,45 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     .state('app', {
       url: "/app",
       abstract: true,
-      templateUrl: "templates/menu.html",
+      templateUrl: "templates/side-menu.html",
       controller: 'AppCtrl'
     })
 
-    .state('app.search', {
-      url: "/search",
+    .state('app.main', {
+      url: "/main",
       views: {
         'menuContent' :{
-          templateUrl: "templates/search.html"
+          templateUrl: "templates/main.html",
         }
       }
     })
 
-    .state('app.browse', {
-      url: "/browse",
+    .state('app.play', {
+      url: "/play",
       views: {
         'menuContent' :{
-          templateUrl: "templates/browse.html"
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: "/playlists",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/playlists.html",
-          controller: 'PlaylistsCtrl'
+          templateUrl: "templates/play.html"
         }
       }
     })
 
     .state('app.single', {
-      url: "/playlists/:playlistId",
+      url: "/single",
       views: {
         'menuContent' :{
-          templateUrl: "templates/playlist.html",
-          controller: 'PlaylistCtrl'
+          templateUrl: "templates/single.html"
         }
       }
-    });
+    })
+
+    .state('app.multi', {
+      url: "/multi",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/multi.html"
+        }
+      }
+    })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/main');
 });
