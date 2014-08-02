@@ -40,35 +40,41 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('GeoCtrl', function ($scope, $ionicLoading, $compile, $cordovaGeolocation) {
   $scope.info = "balasasd";
    function initialize() {
-        var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+      $cordovaGeolocation.getCurrentPosition().then(function(position) {
+            // Position here: position.coords.latitude, position.coords.longitude
 
-        var mapOptions = {
-          center: myLatlng,
-          zoom: 16,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
+          var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-        //Marker + infowindow + angularjs compiled ng-click
-        var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
-        var compiled = $compile(contentString)($scope);
+          var mapOptions = {
+            center: myLatlng,
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          var map = new google.maps.Map(document.getElementById("map"),
+              mapOptions);
 
-        var infowindow = new google.maps.InfoWindow({
-          content: compiled[0]
+          //Marker + infowindow + angularjs compiled ng-click
+          var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
+          var compiled = $compile(contentString)($scope);
+
+          var infowindow = new google.maps.InfoWindow({
+            content: compiled[0]
+          });
+
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Uluru (Ayers Rock)'
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+          });
+
+          $scope.map = map;
+        }, function(err) {
+          // error
         });
-
-        var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Uluru (Ayers Rock)'
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map,marker);
-        });
-
-        $scope.map = map;
       }
       //google.maps.event.addDomListener(window, 'load', initialize);
       initialize();
@@ -83,7 +89,7 @@ angular.module('starter.controllers', ['ngCordova'])
           showBackdrop: false
         });
 
-        navigator.geolocation.getCurrentPosition(function(pos) {
+        $cordovaGeolocation.getCurrentPosition().then(function(pos) {
           $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
           $ionicLoading.hide();
         }, function(error) {
