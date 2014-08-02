@@ -1,7 +1,14 @@
-<ion-view title="Single Player" hide-back-button="true">
-  <ion-nav-buttons side="right">
-    <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
-  </ion-content>
-</ion-view>
+<ion-header-bar align-title="left" class="bar-positive">
+  <div class="buttons">
+    <button class="button" ng-click="cancelClick()">Cancel</button>
+  </div>
+  <h1 class="title">Single Player Twerk</h1>
+</ion-header-bar>
+<ion-content>
+<br />
+<br />
+<br />
+  <ul>
+  	<li>{{ twerks }}</li>
+  </ul>
+</ion-content>

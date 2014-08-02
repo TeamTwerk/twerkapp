@@ -109,4 +109,16 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.clickTest = function() {
         alert('Example of infowindow with ng-click')
       };
+})
+
+.controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, twerkometer) {
+  
+  $scope.twerks = 'No message';
+
+  twerkometer.callback = function(message) {
+    $scope.$apply(function() {
+      $scope.twerks = message;
+    });
+  }
+
 });
