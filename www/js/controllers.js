@@ -36,8 +36,8 @@ angular.module('starter.controllers', ['ngCordova'])
     $state.go(state);
   };
 
-  $scope.emitData = function(data) {
-    mySocket.emit('data', {c: {roomId :1234, twerk: {t: (Math.random() * 450) + 50, tpm: (Math.random() * 100) + 50}}} );
+  $scope.emitData = function(roomID, t, tpm) {
+    mySocket.emit('data', {c: {roomId: roomID, twerk: {t: t, tpm: tpm}}} );
   };
 
   mySocket.on('data', function(data) {
@@ -49,10 +49,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('MultiCtrl', function($scope, $state, mySocket) {
   $scope.joinMultiplayer = function() {
     $state.go('app.multi');
-    mySocket.emit('join', {c:{ roomId: 1234} });
-    setInterval(function() {
-      $scope.emitData();
-    },1000);
+    $scope.emitMultiData('join');
   };
 
   $scope.emitMultiData = function(data) {
