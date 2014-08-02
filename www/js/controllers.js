@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -30,6 +30,10 @@ angular.module('starter.controllers', [])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
+  };
+
+  $scope.changeState = function(state) {
+    $state.go(state);
   };
 })
 

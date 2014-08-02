@@ -38,6 +38,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       views: {
         'menuContent' :{
           templateUrl: "templates/main.html",
+          controller: 'AppCtrl'
         }
       }
     })
@@ -46,7 +47,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: "/play",
       views: {
         'menuContent' :{
-          templateUrl: "templates/play.html"
+          templateUrl: "templates/play.html",
+          controller: 'AppCtrl'
         }
       }
     })
@@ -55,7 +57,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: "/single",
       views: {
         'menuContent' :{
-          templateUrl: "templates/single.html"
+          templateUrl: "templates/single.html",
+          controller: 'AppCtrl'
         }
       }
     })
@@ -64,7 +67,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: "/multi",
       views: {
         'menuContent' :{
-          templateUrl: "templates/multi.html"
+          templateUrl: "templates/multi.html",
+          controller: 'AppCtrl'
         }
       }
     })
