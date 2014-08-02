@@ -119,7 +119,7 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log("START MATCH");
         $scope.countdown = data.c.countdown;
         $scope.duration = data.c.duration;
-        startCountdown();
+        $scope.startCountdown();
         break;
     }
   });
