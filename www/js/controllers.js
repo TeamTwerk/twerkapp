@@ -42,7 +42,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   $scope.joinMultiplayer = function() {
     $state.go('app.multiplayer');
-    $scope.emitMultiData('join');
+    mySocket.emit('matchmaking', {m: 'join'});
   };
 
   mySocket.on('data', function(data) {
