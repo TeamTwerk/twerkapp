@@ -67,7 +67,6 @@ angular.module('starter.controllers', ['ngCordova'])
   var myUUID = getMyUUID();
   var myUUDI = 1234;
   var playerReady = false;
-  var currentRoomID;
   var countdownTimer;
   var debugTwerkInterval;
 
@@ -96,7 +95,7 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.duration--;
           $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
           if(duration == 0) {
-            mySocket.emit('leave', {c: $scope.roomID});
+            mySocket.emit('leave', {c: $scope.currentRoomID});
             $state.go('app.play');
           }
         }, 1000);
@@ -105,11 +104,11 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   $scope.emitTwerkData = function(t, tpm) {
-    mySocket.emit('data', {c: {roomId: $scope.roomID}, m:{twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
+    mySocket.emit('data', {c: {roomId: $scope.currentRoomID}, m:{twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
   };
 
   $scope.emitMessageData = function(data) {
-    mySocket.emit('data', {c: {roomId: $scope.roomID}, m: data});
+    mySocket.emit('data', {c: {roomId: $scope.currentRoomID}, m: data});
   };
 
   mySocket.on('data', function(data) {
@@ -131,7 +130,7 @@ angular.module('starter.controllers', ['ngCordova'])
     switch(data.m) {
       case "joinRoom":
         console.log("JOIN ROOM");
-        currentRoomID = data.c.roomId;
+        $scope.currentRoomID = data.c.roomId;
         $scope.roomJoined = true;
         // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
         break;
