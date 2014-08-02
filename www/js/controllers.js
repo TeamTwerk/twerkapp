@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, mySocket) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, mySocket, $cordovaDevice) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -36,45 +36,82 @@ angular.module('starter.controllers', ['ngCordova'])
     $state.go(state);
   };
 
-  $scope.emitData = function(roomID, t, tpm) {
-    mySocket.emit('data', {c: {roomId: roomID, twerk: {t: t, tpm: tpm}}} );
+  $scope.joinMultiplayer = function(username) {
+    $state.go('app.multiplayer');
+    mySocket.emit('matchmaking', {c: {uuid: getMyUUID(), name: username},  m: 'join'});
   };
 
-  $scope.joinMultiplayer = function() {
-    $state.go('app.multiplayer');
-    mySocket.emit('matchmaking', {m: 'join'});
+  getMyUUID = function() {
+    /*if($cordovaDevice.getDevice() == null) {
+      return $cordovaDevice.getUUID();
+    } else {
+      return null;
+    }*/
+    return Date.now(); //Debug code for browser
   };
 
   mySocket.on('data', function(data) {
     console.log(data);
+
+    switch(data.m) {
+      case "updateRoom":
+        console.log("UPDATE ROOM");
+        break;
+    }
   });
 
 })
 
-.controller('MultiCtrl', function($scope, $state, mySocket) {
+.controller('MultiCtrl', function($scope, $state, mySocket, $cordovaDevice) {
+
+  var myUUID = getMyUUID();
+  var myUUDI = 1234;
+  var playerReady = false;
+  var currentRoomID;
 
   $scope.leaveMultiplayer = function() {
-    $scope.emitMultiData('leave');
+    mySocket.emit('matchmaking', {m: 'leave'});
     $state.go('app.play');
   };
 
-  $scope.emitMultiData = function(data) {
-    mySocket.emit('matchmaking', {m: data});
+  $scope.readyCheck = function() {
+    if(playerReady) {
+      $scope.emitMessageData("unready");
+      playerReady = false;
+    } else {
+      $scope.emitMessageData("ready");
+      playerReady = true;
+    }
   };
+
+  $scope.emitTwerkData = function(t, tpm) {
+    mySocket.emit('data', {c: {roomId: $scope.roomID, twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
+  };
+
+  $scope.emitMessageData = function(data) {
+    mySocket.emit('data', {c: {roomId: $scope.roomID}, m: data});
+  };
+
+  mySocket.on('data', function(data) {
+    console.log(data);
+
+    switch(data.m) {
+      case "startMatch":
+        console.log("START MATCH");
+        break;
+    }
+  });
 
   mySocket.on('matchmaking', function(data) {
     console.log(data);
 
-    switch(data) {
+    switch(data.m) {
       case "joinRoom":
         console.log("JOIN ROOM");
+        currentRoomID = data.c.roomId;
+        $scope.roomJoined = true;
         // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
         break;
-
-      case "endGame":
-        console.log("END GAME");
-        break;
-
     }
   });
 

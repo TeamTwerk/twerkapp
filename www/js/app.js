@@ -50,6 +50,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       }
     })
 
+    .state('app.enter-name', {
+      url: "/enter-name",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/enter-name.html"
+        }
+      }
+    })
+
     .state('app.single', {
       url: "/single",
       views: {

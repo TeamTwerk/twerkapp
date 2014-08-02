@@ -1,0 +1,9 @@
+<ion-view title="Enter Name" hide-back-button="true">
+  <ion-nav-buttons side="right">
+    <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+	<input name="input" size="40" width="250" ng-model="text"/>
+	<button ng-click="joinMultiplayer(text)" ng-disabled="!(text != undefined && text.length > 0)">Join!</button>
+  </ion-content>
+</ion-view>
