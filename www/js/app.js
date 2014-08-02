@@ -68,6 +68,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+
+    .state('app.geo', {
+      url: "/geo",
+      views: {
+        "menuContent": {
+          templateUrl: "templates/geo.html",
+          controller: "GeoCtrl"
+        }
+      }
+    })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/main');
 });
