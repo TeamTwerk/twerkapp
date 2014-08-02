@@ -129,7 +129,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     switch(data.m) {
       case "joinRoom":
-        console.log("JOIN ROOM");
+        console.log("JOIN ROOM: " + data.c.roomId);
         $scope.currentRoomID = data.c.roomId;
         $scope.roomJoined = true;
         // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
