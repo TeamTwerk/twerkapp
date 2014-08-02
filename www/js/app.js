@@ -29,14 +29,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
     .state('app', {
       url: "/app",
       abstract: true,
-      templateUrl: "templates/side-menu.html",
+      templateUrl: "templates/side-menu.html"
     })
 
     .state('app.main', {
       url: "/main",
       views: {
         'menuContent' :{
-          templateUrl: "templates/main.html",
+          templateUrl: "templates/main.html"
         }
       }
     })
@@ -45,7 +45,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       url: "/play",
       views: {
         'menuContent' :{
-          templateUrl: "templates/play.html",
+          templateUrl: "templates/play.html"
         }
       }
     })
@@ -54,7 +54,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       url: "/single",
       views: {
         'menuContent' :{
-          templateUrl: "templates/single.html",
+          templateUrl: "templates/single.html"
         }
       }
     })
@@ -64,6 +64,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       views: {
         'menuContent' :{
           templateUrl: "templates/multi.html",
+          controller: "MultiCtrl"
         }
       }
     })

@@ -36,14 +36,43 @@ angular.module('starter.controllers', ['ngCordova'])
     $state.go(state);
   };
 
-  $scope.emitData = function() {
-    mySocket.emit('data', {meow: 'hi'});
+  $scope.emitData = function(data) {
+    mySocket.emit('data', {c: {roomId :1234, twerk: {t: (Math.random() * 450) + 50, tpm: (Math.random() * 100) + 50}}} );
   };
 
   mySocket.on('data', function(data) {
     console.log(data);
   });
 
+})
+
+.controller('MultiCtrl', function($scope, $state, mySocket) {
+  $scope.joinMultiplayer = function() {
+    $state.go('app.multi');
+    mySocket.emit('join', {c:{ roomId: 1234} });
+    setInterval(function() {
+      $scope.emitData();
+    },1000);
+  };
+
+  $scope.emitMultiData = function(data) {
+    mySocket.emit('matchmaking', {m: data});
+  };
+
+  mySocket.on('matchmaking', function(data) {
+    console.log(data);
+
+    switch(data) {
+      case "joinRoom":
+        console.log("JOIN ROOM");
+        // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
+        break;
+    }
+  });
+
+  mySocket.on('err', function(data) {
+    console.log(data);
+  });
 })
 
 .controller('GeoCtrl', function ($scope, $ionicLoading, $compile, $cordovaGeolocation) {
