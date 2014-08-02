@@ -3,5 +3,9 @@
     <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
+  	<button ng-click="joinMultiplayer()">Join</button>
+  	<button ng-click="emitMultiData('start')">Start</button>
+  	<button ng-click="emitMultiData('end')">End</button>
+  	<button ng-click="emitMultiData('leave')">Leave</button>
   </ion-content>
 </ion-view>

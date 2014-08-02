@@ -59,11 +59,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       }
     })
 
-    .state('app.multi', {
-      url: "/multi",
+    .state('app.multiplayer', {
+      url: "/multiplayer",
       views: {
         'menuContent' :{
-          templateUrl: "templates/multi.html",
+          templateUrl: "templates/multiplayer.html",
           controller: "MultiCtrl"
         }
       }
