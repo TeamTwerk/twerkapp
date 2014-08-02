@@ -7,13 +7,13 @@
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
 
-  <ion-side-menu side="left">
+  <ion-side-menu side="right">
     <header class="bar bar-header bar-stable">
       <h1 class="title">Menu</h1>
     </header>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item nav-clear menu-close href="#/app/main">
+        <ion-item nav-clear menu-close ng-click="changeState('app.main')">
           Home
         </ion-item>
         <ion-item nav-clear menu-close ng-click="login()">
