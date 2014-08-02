@@ -40,6 +40,11 @@ angular.module('starter.controllers', ['ngCordova'])
     mySocket.emit('data', {c: {roomId: roomID, twerk: {t: t, tpm: tpm}}} );
   };
 
+  $scope.joinMultiplayer = function() {
+    $state.go('app.multiplayer');
+    $scope.emitMultiData('join');
+  };
+
   mySocket.on('data', function(data) {
     console.log(data);
   });
@@ -47,11 +52,6 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('MultiCtrl', function($scope, $state, mySocket) {
-
-  $scope.joinMultiplayer = function() {
-    $state.go('app.multiplayer');
-    $scope.emitMultiData('join');
-  };
 
   $scope.leaveMultiplayer = function() {
     $scope.emitMultiData('leave');
