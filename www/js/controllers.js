@@ -47,8 +47,15 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('MultiCtrl', function($scope, $state, mySocket) {
+
   $scope.joinMultiplayer = function() {
+    $state.go('app.multiplayer');
     $scope.emitMultiData('join');
+  };
+
+  $scope.leaveMultiplayer = function() {
+    $scope.emitMultiData('leave');
+    $state.go('app.play');
   };
 
   $scope.emitMultiData = function(data) {
@@ -63,6 +70,11 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log("JOIN ROOM");
         // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
         break;
+
+      case "endGame":
+        console.log("END GAME");
+        break;
+
     }
   });
 
