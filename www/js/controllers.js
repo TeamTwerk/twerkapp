@@ -110,7 +110,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   $scope.emitTwerkData = function(t, tpm) {
-    mySocket.emit('data', {c: {roomId: $scope.currentRoomID}, m:{twerk: {t: t, tpm: tpm, uuid: myUUID}}} );
+    mySocket.emit('data', {c: {roomId: $scope.currentRoomID, twerk: {t: t, tpm: tpm, uuid: myUUID}}, m: "twerk" } );
   };
 
   $scope.emitMessageData = function(data) {
