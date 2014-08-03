@@ -84,9 +84,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
       if($scope.countdown <= 0) {
         clearInterval(countdownTimer);
+        twerkometer.reset();
       }
-
       }, 1000);
+
 
         matchInterval = setInterval(function() {
           twerkometer.callback = function(stats) {
