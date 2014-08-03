@@ -85,6 +85,7 @@ angular.module('starter.controllers', ['ngCordova'])
       if($scope.countdown == 0) {
         clearInterval(countdownTimer);
 
+        twerkometer.reset();
         twerkometer.callback = function(stats) {
           $scope.emitTwerkData(stats.totalTwerks, stats.twerksPerMinute);
         };
