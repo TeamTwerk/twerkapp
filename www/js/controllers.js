@@ -90,6 +90,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
         matchInterval = setInterval(function() {
+          var sent = false;
           twerkometer.callback = function(stats) {
             $scope.emitTwerkData(stats.totalTwerks, stats.twerksPerMinute);
           };
@@ -100,7 +101,10 @@ angular.module('starter.controllers', ['ngCordova'])
           if($scope.duration <= 0) {
             clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
-            mySocket.emit('data', {m: "gameOver", c:{roomId: $scope.currentRoomID}})
+            if (!sent) {
+              mySocket.emit('data', {m: "gameOver", c:{roomId: $scope.currentRoomID}})
+              sent = true;
+            }
             twerkometer.callback = function () {};
             $state.go('app.end');
           }
