@@ -68,9 +68,13 @@ angular.module('starter.controllers', ['ngCordova'])
   var countdownTimer;
   var matchInterval;
 
+  twerkometer.reset();
+
   $scope.leaveMultiplayer = function() {
     mySocket.emit('matchmaking', {m: 'leave'});
     $state.go('app.play');
+    twerkometer.reset();
+    twerkometer.callback = function () {};
   };
 
   $scope.readyCheck = function() {
@@ -104,6 +108,8 @@ angular.module('starter.controllers', ['ngCordova'])
           if($scope.duration == 0) {
             clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
+            twerkometer.reset();
+            twerkometer.callback = function () {};
             $state.go('app.play');
           }
         }, 1000);
@@ -215,7 +221,7 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, $cordovaVibration, twerkometer) {
-  
+
   $scope.twerks = 0;
   $scope.twerksPerMinute = 0;
 
