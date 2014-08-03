@@ -192,7 +192,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       return {
         totalSeconds: totalSeconds,
         totalTwerks: totalTwerks,
-        twerksPerMinute: 60 * totalTwerks / totalSeconds
+        twerksPerMinute: Math.round(60 * totalTwerks / totalSeconds)
       }
     }
 
@@ -289,7 +289,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       return {
         totalSeconds: totalSeconds,
         totalTwerks: totalTwerks,
-        twerksPerMinute: 60 * totalTwerks / totalSeconds
+        twerksPerMinute: Math.round(60 * totalTwerks / totalSeconds)
       }
     }
   }
