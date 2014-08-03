@@ -7,3 +7,24 @@
 .scroll {
   height: 100%;
 }
+
+h1.splash {
+	font-family: Georgia;
+	font-size: 80px;
+	text-shadow:2px 2px 2px #ccc;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.splash-subtle {
+	color: #888;
+	font-style: italic;
+}
+
+.splash-emph {
+	font-weight: bold;
+	color: #f0b840;
+}
