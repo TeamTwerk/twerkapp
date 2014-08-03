@@ -314,7 +314,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       twerkDetector.reset();
     },
     stats: function() {
-      twerkDetector.stats();
+      return twerkDetector.stats();
     }
   };
 
