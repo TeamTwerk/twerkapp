@@ -37,8 +37,8 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   $scope.joinMultiplayer = function(username) {
-    $state.go('app.multiplayer');
     mySocket.emit('matchmaking', {c: { name: username },  m: 'join'});
+    $state.go('app.multiplayer');
   };
 
   mySocket.on('data', function(data) {
@@ -82,28 +82,29 @@ angular.module('starter.controllers', ['ngCordova'])
 
       $scope.$apply();
 
-      if($scope.countdown == 0) {
+      if($scope.countdown <= 0) {
         clearInterval(countdownTimer);
-
         twerkometer.reset();
-        twerkometer.callback = function(stats) {
-          $scope.emitTwerkData(stats.totalTwerks, stats.twerksPerMinute);
-        };
+      }
+      }, 1000);
+
 
         matchInterval = setInterval(function() {
+          twerkometer.callback = function(stats) {
+            $scope.emitTwerkData(stats.totalTwerks, stats.twerksPerMinute);
+          };
           $scope.duration--;
 
           $scope.$apply();
 
-          if($scope.duration == 0) {
+          if($scope.duration <= 0) {
             clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
+            mySocket.emit('data', {m: "gameOver"})
             twerkometer.callback = function () {};
-            $state.go('app.play');
+            $state.go('app.end');
           }
         }, 1000);
-      }
-    }, 1000);
   };
 
   $scope.emitTwerkData = function(t, tpm) {
@@ -226,4 +227,11 @@ angular.module('starter.controllers', ['ngCordova'])
     }
   }
 
+})
+
+.controller('EndGameCtrl', function ($scope, $state, twerkometer) {
+  $scope.stats = twerkometer.stats();
+  $scope.goTo = function (path) {
+    $state.go(path);
+  };
 });
