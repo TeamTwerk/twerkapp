@@ -3,17 +3,16 @@
 
   <div class="list card">
 
-  <a href="" class="item item-icon-left" ng-show="{{currentRoomID != null}}">
+  <a href="" class="item item-icon-left">
     <i class="icon ion-home"></i>
     Use this ID to see your stats on the web dashboard: {{currentRoomID}}
   </a>
 
-  <a href="" class="item item-icon-left" ng-show="{{countdown > 0}}">
-    <i class="icon ion-ios7-telephone"></i>
-    Get Ready To Twerk ! <br/> {{countdown}}
+  <a href="" class="item" ng-hide="{{countdown < 0 && countdown != null}}">
+    Get Ready To Twerk ! {{countdown}}
   </a>
 
-  <a href="" class="item item-icon-left" ng-show="{{countdown <= 0}}">
+  <a href="" class="item" ng-hide="{{countdown > 0 && countdown != null}}">
     Time Remaining: {{duration}}
   </a>
 
