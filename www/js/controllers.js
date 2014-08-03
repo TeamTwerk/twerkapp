@@ -100,7 +100,7 @@ angular.module('starter.controllers', ['ngCordova'])
           if($scope.duration <= 0) {
             clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
-            mySocket.emit('data', {m: "gameOver"})
+            mySocket.emit('data', {m: "gameOver", c:{roomId: $scope.currentRoomId}})
             twerkometer.callback = function () {};
             $state.go('app.end');
           }
