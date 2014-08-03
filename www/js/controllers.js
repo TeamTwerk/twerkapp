@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, mySocket, $cordovaDevice) {
-  // Form data for the login modal
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, mySocket) {
+  // Form data for the login 
   $scope.loginData = {};
 
   // Create the login modal that we will use later
@@ -38,15 +38,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   $scope.joinMultiplayer = function(username) {
     $state.go('app.multiplayer');
-    mySocket.emit('matchmaking', {c: {uuid: getMyUUID(), name: username},  m: 'join'});
-  };
-
-  getMyUUID = function() {
-    if($cordovaDevice.getDevice() == null) {
-      return $cordovaDevice.getUUID();
-    } else {
-      return null;
-    }
+    mySocket.emit('matchmaking', {c: { name: username },  m: 'join'});
   };
 
   mySocket.on('data', function(data) {
@@ -61,9 +53,8 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('MultiCtrl', function($scope, $state, mySocket, $cordovaDevice, $cordovaVibration, twerkometer) {
+.controller('MultiCtrl', function($scope, $state, $cordovaVibration, mySocket, twerkometer) {
 
-  var myUUID = getMyUUID();
   var playerReady = false;
   var countdownTimer;
   var matchInterval;
@@ -115,7 +106,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   $scope.emitTwerkData = function(t, tpm) {
-    mySocket.emit('data', {c: {roomId: $scope.currentRoomID, twerk: {t: t, tpm: tpm, uuid: myUUID}}, m: "twerk" } );
+    mySocket.emit('data', {c: {roomId: $scope.currentRoomID, twerk: { t: t, tpm: tpm } }, m: "twerk" } );
   };
 
   $scope.emitMessageData = function(data) {
@@ -217,7 +208,7 @@ angular.module('starter.controllers', ['ngCordova'])
       };
 })
 
-.controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, $cordovaVibration, twerkometer) {
+.controller('SinglePlayerCtrl', function($scope, $cordovaVibration, twerkometer) {
 
   $scope.twerks = 0;
   $scope.twerksPerMinute = 0;
