@@ -150,18 +150,50 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
     var filteredPoints = [];
     var twerkLine = new Vector(1, 0, 0);
 
+    var totalTwerks = 0;
+    var startTime = 0;
+    var endTime = 0;
+
     this.add = function(dataPoint) {
-      twerkDetected = false;
       dataPoints.push(dataPoint);
+      
       while(dataPoints.length > frames) {
         dataPoints.shift();
       }
+      
       this.process();
+      
+      if(this.twerkDetected()) {
+        totalTwerks++;
+      }
+
+      if(startTime == 0) {
+        startTime = Date.now();
+      }
+      endTime = Date.now();
     }
 
     this.process = function() {
       solveTwerkLine();
       filterPoints();
+    }
+
+    this.reset = function() {
+      dataPoints = [];
+      filteredPoints = [];
+      twerkLine = new Vector(1, 0, 0);
+      totalTwerks = 0;
+      startTime = 0;
+      endTime = 0;
+    }
+
+    this.stats = function() {
+      var totalSeconds = (endTime - startTime) / 1000;
+      return {
+        totalSeconds: totalSeconds,
+        totalTwerks: totalTwerks,
+        twerksPerMinute: 60 * totalTwerks / totalSeconds
+      }
     }
 
     this.getRawPoints = function() {
@@ -238,29 +270,60 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
   }
 
+  function FakeStats() {
+
+    var totalTwerks = 0;
+    var startTime = 0;
+    var endTime = 0;
+
+    this.add = function() {
+      totalTwerks++;
+      if(startTime == 0) {
+        startTime = Date.now();
+      }
+      endTime = Date.now();
+    }
+
+    this.stats = function() {
+      var totalSeconds = (endTime - startTime) / 1000;
+      return {
+        totalSeconds: totalSeconds,
+        totalTwerks: totalTwerks,
+        twerksPerMinute: 60 * totalTwerks / totalSeconds
+      }
+    }
+  }
+
   var twerkDetector = new TwerkDetector(3, 20, 30, 0.3);
-  
+  var fakeStats = new FakeStats();
+
   var resultProxy = {
     callback: function() {}
   };
 
   setInterval(function() {
+
+    var time = Date.now() / 1000;
+    var stats = {};
+    
     if(navigator.accelerometer) {
       $cordovaDeviceMotion.getCurrentAcceleration().then(function(acc) {
-        var time = Date.now()/1000;
         var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
         twerkDetector.add(dataPoint);
         if(twerkDetector.twerkDetected()) {
-          resultProxy.callback();
-        } 
+          resultProxy.callback(twerkDetector.stats());
+        }
       }, function(err) {
         // An error occured. Show a message to the user
       });
     } else {
       if(Math.random() < 0.1) {
-        resultProxy.callback();
+        fakeStats.add();
+        resultProxy.callback(fakeStats.stats());
       }
     }
+
+
   }, 100);
      
   return resultProxy;
