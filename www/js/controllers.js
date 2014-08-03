@@ -42,6 +42,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   getMyUUID = function() {
+
     if($cordovaDevice.getDevice() == null) {
       return $cordovaDevice.getUUID();
     } else {

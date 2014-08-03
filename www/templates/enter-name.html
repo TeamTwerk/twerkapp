@@ -3,7 +3,11 @@
     <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-	<input name="input" size="40" width="250" ng-model="text"/>
-	<button ng-click="joinMultiplayer(text)" ng-disabled="!(text != undefined && text.length > 0)">Join!</button>
+  <div class="list">
+  <label class="item item-input">
+	   <input type="text"  name="input" size="40" width="250" ng-model="text" placeholder="Username"/>
+  </label>
+	   <button class="button button-block button-balanced" ng-click="joinMultiplayer(text)" ng-disabled="!(text != undefined && text.length > 0)">Join!</button>
+   </div>
   </ion-content>
 </ion-view>

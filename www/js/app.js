@@ -89,7 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       }
     })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/main');
+  $urlRouterProvider.otherwise('/app/play');
 })
 .factory('mySocket', function (socketFactory) {
     var myIoSocket = io.connect('http://172.18.1.251:3000');
@@ -156,13 +156,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
     this.add = function(dataPoint) {
       dataPoints.push(dataPoint);
-      
+
       while(dataPoints.length > frames) {
         dataPoints.shift();
       }
-      
+
       this.process();
-      
+
       if(this.twerkDetected()) {
         totalTwerks++;
       }
@@ -305,7 +305,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
     var time = Date.now() / 1000;
     var stats = {};
-    
+
     if(navigator.accelerometer) {
       $cordovaDeviceMotion.getCurrentAcceleration().then(function(acc) {
         var dataPoint = new DataPoint(time, new Vector(acc.x, acc.y, acc.z));
@@ -325,6 +325,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
 
 
   }, 100);
-     
+
   return resultProxy;
 }]);

@@ -3,10 +3,29 @@
     <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-  	<button ng-click="leaveMultiplayer()">Leave</button>
-  	<button ng-click="readyCheck()" ng-disabled="!roomJoined">Ready!</button>
+
+  <div class="list card">
+
+  <a href="" class="item item-icon-left">
+    <i class="icon ion-home"></i>
+    {{currentRoomID}}
+  </a>
+
+  <a href="" class="item item-icon-left" ng-show="{{countdown > 0}}">
+    <i class="icon ion-ios7-telephone"></i>
+    {{countdown}}
+  </a>
+
+  <a href="" class="item item-icon-left" ng-show="{{countdown <= 0}}">
+    <i class="icon ion-wifi"></i>
+    {{duration}}
+  </a>
+
+</div>
     <h1>ROOM ID: {{currentRoomID}}</h1>
   	<h1>{{countdown}}</h1>
   	<h1>{{duration}}</h1>
+  	<button class="button button-block button-balanced" ng-click="readyCheck()" ng-disabled="!roomJoined" ng-show="roomJoined">{{roomJoin ? "Ready!" : "Unready"}}</button>
+  	<button class="button button-block button-assertive" ng-click="leaveMultiplayer()">Leave</button>
   </ion-content>
 </ion-view>
