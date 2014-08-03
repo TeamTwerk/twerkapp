@@ -88,6 +88,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
         }
       }
     })
+    .state('app.end', {
+      url: "/end",
+      views: {
+        "menuContent": {
+          templateUrl: "templates/endgame.html",
+          controller: "EndGameCtrl"
+        }
+      }
+    })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/play');
 })

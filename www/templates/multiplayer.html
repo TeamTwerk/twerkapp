@@ -17,7 +17,7 @@
   </a>
 
 </div>
-  	<button class="button button-block button-balanced" ng-click="readyCheck()" ng-disabled="!roomJoined" ng-show="roomJoined">{{roomJoin ? "Unready" : "Ready"}}</button>
+  	<button class="button button-block button-balanced" ng-click="readyCheck()" ng-disabled="!roomJoined" ng-show="roomJoined">{{isReady ? "Unready" : "Ready"}}</button>
   	<button class="button button-block button-assertive" ng-click="leaveMultiplayer()">Leave</button>
   </ion-content>
 </ion-view>
