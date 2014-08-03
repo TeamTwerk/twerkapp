@@ -88,6 +88,9 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.startCountdown = function() {
     countdownTimer = setInterval(function() {
       $scope.countdown--;
+
+      $scope.$apply();
+
       if($scope.countdown == 0) {
         clearInterval(countdownTimer);
 
@@ -95,10 +98,11 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.emitTwerkData(Math.random() * 450 + 50, Math.random() * 100 + 20);
         };
 
-        $scope.$apply();
-
         matchInterval = setInterval(function() {
           $scope.duration--;
+
+          $scope.$apply();
+
           if($scope.duration == 0) {
             clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
