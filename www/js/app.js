@@ -298,7 +298,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
   var fakeStats = new FakeStats();
 
   var resultProxy = {
-    callback: function() {}
+    callback: function() {
+      //To be reassigned in handler. Yuck :P
+    },
+    reset: function() {
+      twerkDetector.reset();
+    },
+    stats: function() {
+      twerkDetector.stats();
+    }
   };
 
   setInterval(function() {
