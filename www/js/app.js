@@ -92,7 +92,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'btford.
       url: "/end",
       views: {
         "menuContent": {
-          templateUrl: "templates/endgame.html",
+          templateUrl: "templates/gameover.html",
           controller: "EndGameCtrl"
         }
       }
