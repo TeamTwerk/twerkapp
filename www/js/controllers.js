@@ -42,12 +42,11 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 
   getMyUUID = function() {
-    /*if($cordovaDevice.getDevice() == null) {
+    if($cordovaDevice.getDevice() == null) {
       return $cordovaDevice.getUUID();
     } else {
       return null;
-    }*/
-    return Date.now(); //Debug code for browser
+    }
   };
 
   mySocket.on('data', function(data) {
@@ -65,7 +64,6 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('MultiCtrl', function($scope, $state, mySocket, $cordovaDevice, $cordovaVibration, twerkometer) {
 
   var myUUID = getMyUUID();
-  var myUUDI = 1234;
   var playerReady = false;
   var countdownTimer;
   var matchInterval;
