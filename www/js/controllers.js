@@ -211,12 +211,15 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('SinglePlayerCtrl', function($scope, $cordovaVibration, twerkometer) {
 
-  $scope.twerks = 0;
+  $scope.totalSeconds = 0;
   $scope.twerksPerMinute = 0;
+  $scope.totalTwerks = 0;
 
   twerkometer.callback = function(stats) {
-    $scope.twerks = stats.totalTwerks;
+    console.log(stats);
+    $scope.totalSeconds = stats.totalSeconds;
     $scope.twerksPerMinute = stats.twerksPerMinute;
+    $scope.totalTwerks = stats.totalTwerks;
     $scope.$apply();
     if(navigator.notification) {
       $cordovaVibration.vibrate(50);
