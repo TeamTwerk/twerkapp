@@ -95,6 +95,8 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
         };
 
+        $scope.$apply();
+
         matchInterval = setInterval(function() {
           $scope.duration--;
           if($scope.duration == 0) {
