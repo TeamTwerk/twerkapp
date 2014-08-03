@@ -22,9 +22,6 @@
   </a>
 
 </div>
-    <h1>ROOM ID: {{currentRoomID}}</h1>
-  	<h1>{{countdown}}</h1>
-  	<h1>{{duration}}</h1>
   	<button class="button button-block button-balanced" ng-click="readyCheck()" ng-disabled="!roomJoined" ng-show="roomJoined">{{roomJoin ? "Ready!" : "Unready"}}</button>
   	<button class="button button-block button-assertive" ng-click="leaveMultiplayer()">Leave</button>
   </ion-content>
