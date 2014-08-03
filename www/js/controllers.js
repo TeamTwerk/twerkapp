@@ -94,8 +94,8 @@ angular.module('starter.controllers', ['ngCordova'])
       if($scope.countdown == 0) {
         clearInterval(countdownTimer);
 
-        twerkometer.callback = function() {
-          $scope.emitTwerkData(Math.random() * 450 + 50, Math.random() * 100 + 20);
+        twerkometer.callback = function(stats) {
+          $scope.emitTwerkData(stats.totalTwerks, stats.twerksPerMinute);
         };
 
         matchInterval = setInterval(function() {
