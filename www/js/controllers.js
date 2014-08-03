@@ -208,13 +208,14 @@ angular.module('starter.controllers', ['ngCordova'])
       };
 })
 
-.controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, twerkometer) {
+.controller('SinglePlayerCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, $cordovaVibration, twerkometer) {
   
   $scope.twerks = 0;
 
   twerkometer.callback = function(message) {
     $scope.twerks++;
-    $scope.apply();
+    $scope.$apply();
+    $cordovaVibration.vibrate(50);
   }
 
 });
