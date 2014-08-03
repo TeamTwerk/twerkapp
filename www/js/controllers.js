@@ -62,13 +62,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('MultiCtrl', function($scope, $state, mySocket, $cordovaDevice) {
+.controller('MultiCtrl', function($scope, $state, mySocket, $cordovaDevice, $cordovaVibration, twerkometer) {
 
   var myUUID = getMyUUID();
   var myUUDI = 1234;
   var playerReady = false;
   var countdownTimer;
-  var debugTwerkInterval;
+  var matchInterval;
 
   $scope.leaveMultiplayer = function() {
     mySocket.emit('matchmaking', {m: 'leave'});
@@ -91,11 +91,12 @@ angular.module('starter.controllers', ['ngCordova'])
       if($scope.countdown == 0) {
         clearInterval(countdownTimer);
 
-        debugTwerkInterval = setInterval(function() {
+        twerkometer.callback = $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
+
+        matchInterval = setInterval(function() {
           $scope.duration--;
-          $scope.emitTwerkData(Math.random() * 450 + 50, Math.random * 100 + 20);
           if($scope.duration == 0) {
-            clearInterval(debugTwerkInterval);
+            clearInterval(matchInterval);
             mySocket.emit('leave', {c: $scope.currentRoomID});
             $state.go('app.play');
           }
@@ -133,7 +134,6 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log("JOIN ROOM: " + data.c.roomId);
         $scope.currentRoomID = data.c.roomId;
         $scope.roomJoined = true;
-        // handle join room stuff: {m: "joinRoom", c:{ roomId: 1235, opponent: "1231cw2ww"}}
         break;
     }
   });
